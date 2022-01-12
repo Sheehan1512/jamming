@@ -7,7 +7,9 @@ import Playlist from '../Playlist/Playlist';
 class App extends React.Component {
   
   constructor(props) {
+    
     super(props);
+    
     this.state = {
       searchResults: [
         {
@@ -21,6 +23,12 @@ class App extends React.Component {
           artist: 'Justin Bieber',
           album: 'Jani na bhai',
           id: 2
+        },
+        {
+          name: 'Numb',
+          artist: 'Linkin Park',
+          album: 'Hybrid Theory',
+          id: 3
         }
       ],
       playlistName: 'SheEo',
@@ -38,7 +46,19 @@ class App extends React.Component {
           id: 2
         }
       ]
+    };
+
+    this.addTrack = this.addTrack.bind(this);
+
+  }
+
+  addTrack(track) {
+    const plTracks = this.state.playlistTracks;
+    if (plTracks.some(playlistTrack => playlistTrack.id === track.id)) {
+      return;
     }
+    plTracks.push(track);
+    this.setState({playlistTracks: plTracks});
   }
 
   render() {
@@ -48,8 +68,12 @@ class App extends React.Component {
         <div className="App">
           <SearchBar />
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.searchResults} />
+            
+            <SearchResults searchResults={this.state.searchResults} 
+                           onAdd={this.addTrack} />
+
             <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks} />
+
           </div>
         </div>
       </div>
